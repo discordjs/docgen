@@ -1,0 +1,101 @@
+{
+  "meta": {
+    "version": "0.1.0",
+    "date": 1479713703456
+  },
+  "classes": [
+    {
+      "id": "SomeClass",
+      "name": "SomeClass",
+      "meta": {
+        "line": 5,
+        "file": "SomeClass.js",
+        "path": "test/src"
+      },
+      "classConstructor": {
+        "id": "SomeClass()",
+        "name": "SomeClass",
+        "description": "Constructs a thing.",
+        "memberof": "SomeClass",
+        "params": []
+      },
+      "methods": [
+        {
+          "id": "SomeClass#doStuff",
+          "name": "doStuff",
+          "description": "Does stuff.",
+          "memberof": "SomeClass",
+          "meta": {
+            "line": 17,
+            "file": "SomeClass.js",
+            "path": "test/src"
+          },
+          "returns": {
+            "types": [
+              [
+                [
+                  "void",
+                  ""
+                ]
+              ]
+            ]
+          },
+          "params": [
+            {
+              "name": "stuff",
+              "description": "Stuff to do",
+              "type": {
+                "types": [
+                  [
+                    [
+                      "string",
+                      ""
+                    ]
+                  ]
+                ]
+              }
+            }
+          ]
+        }
+      ],
+      "properties": [
+        {
+          "id": "SomeClass#thing",
+          "name": "thing",
+          "description": "Just some thing",
+          "memberof": "SomeClass",
+          "type": {
+            "types": [
+              [
+                [
+                  "number",
+                  ""
+                ]
+              ]
+            ]
+          },
+          "props": []
+        }
+      ],
+      "events": []
+    }
+  ],
+  "interfaces": [],
+  "typedefs": [],
+  "custom": {
+    "general": [
+      {
+        "name": "Heya",
+        "category": "general",
+        "type": "md",
+        "data": "# Heya\r\nNothing to see here, sorry.\r\n"
+      },
+      {
+        "name": "blah",
+        "category": "general",
+        "type": "js",
+        "data": "console.log(42);\r\n"
+      }
+    ]
+  }
+}
