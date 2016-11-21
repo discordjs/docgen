@@ -85,12 +85,12 @@ class Documentation {
 	}
 
 	serialize() {
-		const meta = {
+		const generator = {
 			version,
 			date: Date.now()
 		};
 		const serialized = {
-			meta,
+			generator,
 			classes: Array.from(this.classes.values()).map(c => c.serialize()),
 			interfaces: Array.from(this.interfaces.values()).map(i => i.serialize()),
 			typedefs: Array.from(this.typedefs.values()).map(t => t.serialize()),
