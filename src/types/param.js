@@ -1,6 +1,23 @@
 const DocumentedItem = require('./item');
 const DocumentedVarType = require('./var-type');
 
+class DocumentedParam extends DocumentedItem {
+	registerMetaInfo(data) {
+		data.type = new DocumentedVarType(this, data.type);
+		this.directData = data;
+	}
+
+	serialize() {
+		return {
+			name: this.directData.name,
+			description: this.directData.description,
+			optional: this.directData.optional,
+			default: this.directData.defaultvalue,
+			type: this.directData.type.serialize()
+		};
+	}
+}
+
 /*
 {
     "type":{
@@ -12,25 +29,5 @@ const DocumentedVarType = require('./var-type');
       "name":"newRoles"
     }
 */
-
-class DocumentedParam extends DocumentedItem {
-	registerMetaInfo(data) {
-		super.registerMetaInfo(data);
-		this.directData = data;
-		this.directData.type = new DocumentedVarType(this, data.type);
-	}
-
-	serialize() {
-		super.serialize();
-		const { name, description, type, optional, defaultvalue } = this.directData;
-		return {
-			name,
-			description,
-			optional,
-			default: defaultvalue,
-			type: type.serialize()
-		};
-	}
-}
 
 module.exports = DocumentedParam;

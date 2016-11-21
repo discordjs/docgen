@@ -1,6 +1,24 @@
 const DocumentedItem = require('./item');
 const DocumentedParam = require('./param');
 
+class DocumentedConstructor extends DocumentedItem {
+	registerMetaInfo(data) {
+		if(data.params && data.params.length > 0) {
+			for(let i = 0; i < data.params.length; i++) data.params[i] = new DocumentedParam(this, data.params[i]);
+		}
+		this.directData = data;
+	}
+
+	serialize() {
+		return {
+			name: this.directData.name,
+			description: this.directData.description,
+			access: this.directData.access,
+			params: this.directData.params ? this.directData.params.map(p => p.serialize()) : undefined
+		};
+	}
+}
+
 /*
 { id: 'Client()',
   longname: 'Client',
@@ -15,26 +33,5 @@ const DocumentedParam = require('./param');
        name: 'options' } ],
   order: 10 }
 */
-
-class DocumentedConstructor extends DocumentedItem {
-	registerMetaInfo(data) {
-		super.registerMetaInfo(data);
-		this.directData = data;
-		const newParams = [];
-		for(const param of data.params) newParams.push(new DocumentedParam(this, param));
-		this.directData.params = newParams;
-	}
-
-	serialize() {
-		super.serialize();
-		const { name, description, access, params } = this.directData;
-		return {
-			name,
-			description,
-			access,
-			params: params.map(p => p.serialize())
-		};
-	}
-}
 
 module.exports = DocumentedConstructor;

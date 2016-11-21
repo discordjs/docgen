@@ -3,6 +3,33 @@ const DocumentedItemMeta = require('./item-meta');
 const DocumentedVarType = require('./var-type');
 const DocumentedParam = require('./param');
 
+class DocumentedFunction extends DocumentedItem {
+	registerMetaInfo(data) {
+		data.meta = new DocumentedItemMeta(this, data.meta);
+		if(data.returns) data.returns = new DocumentedVarType(this, data.returns[0].type);
+		if(data.params && data.params.length > 0) {
+			for(let i = 0; i < data.params.length; i++) data.params[i] = new DocumentedParam(this, data.params[i]);
+		}
+		this.directData = data;
+	}
+
+	serialize() {
+		return {
+			name: this.directData.name,
+			description: this.directData.description,
+			scope: this.directData.scope !== 'instance' ? this.directData.scope : undefined,
+			access: this.directData.access,
+			inherits: this.directData.inherits,
+			inherited: this.directData.inherited,
+			implements: this.directData.implements,
+			examples: this.directData.examples,
+			params: this.directData.params ? this.directData.params.map(p => p.serialize()) : undefined,
+			returns: this.directData.returns ? this.directData.returns.serialize() : undefined,
+			meta: this.directData.meta.serialize()
+		};
+	}
+}
+
 /*
 {
   "id":"ClientUser#sendTTSMessage",
@@ -47,37 +74,6 @@ const DocumentedParam = require('./param');
   },
   "order":293
 }
-  */
-
-class DocumentedFunction extends DocumentedItem {
-	registerMetaInfo(data) {
-		super.registerMetaInfo(data);
-		this.directData = data;
-		this.directData.meta = new DocumentedItemMeta(this, data.meta);
-		this.directData.returns = new DocumentedVarType(this, data.returns ? data.returns[0].type : { names: ['void'] });
-		const newParams = [];
-		for(const param of data.params) newParams.push(new DocumentedParam(this, param));
-		this.directData.params = newParams;
-	}
-
-	serialize() {
-		super.serialize();
-		const { name, description, examples, inherits, inherited, meta, returns, params, access, scope } = this.directData;
-		const serialized = {
-			access,
-			name,
-			description,
-			examples,
-			inherits,
-			inherited,
-			implements: this.directData.implements,
-			scope: scope !== 'instance' ? scope : undefined,
-			meta: meta.serialize(),
-			returns: returns.serialize(),
-			params: params.map(p => p.serialize())
-		};
-		return serialized;
-	}
-}
+*/
 
 module.exports = DocumentedFunction;

@@ -1,7 +1,7 @@
 class DocumentedItem {
 	constructor(parent, info) {
 		this.parent = parent;
-		this.directData = {};
+		this.directData = null;
 		this.registerMetaInfo(info);
 	}
 

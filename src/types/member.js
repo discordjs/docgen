@@ -3,6 +3,32 @@ const DocumentedItemMeta = require('./item');
 const DocumentedVarType = require('./var-type');
 const DocumentedParam = require('./param');
 
+class DocumentedMember extends DocumentedItem {
+	registerMetaInfo(data) {
+		data.meta = new DocumentedItemMeta(this, data.meta);
+		data.type = new DocumentedVarType(this, data.type);
+		if(data.properties && data.properties.length > 0) {
+			for(let i = 0; i < data.properties.length; i++) {
+				data.properties[i] = new DocumentedParam(this, data.properties[i]);
+			}
+		}
+		this.directData = data;
+	}
+
+	serialize() {
+		return {
+			name: this.directData.name,
+			description: this.directData.description,
+			scope: this.directData.scope !== 'instance' ? this.directData.scope : undefined,
+			access: this.directData.access,
+			readonly: this.directData.readonly,
+			type: this.directData.type.serialize(),
+			props: this.directData.properties ? this.directData.properties.map(p => p.serialize()) : undefined,
+			meta: this.directData.meta.serialize()
+		};
+	}
+}
+
 /*
 { id: 'Client#rest',
   longname: 'Client#rest',
@@ -19,36 +45,5 @@ const DocumentedParam = require('./param');
      path: 'src/client' },
   order: 11 }
 */
-
-class DocumentedMember extends DocumentedItem {
-	registerMetaInfo(data) {
-		super.registerMetaInfo(data);
-		this.directData = data;
-		this.directData.meta = new DocumentedItemMeta(this, data.meta);
-		this.directData.type = new DocumentedVarType(this, data.type);
-		if(data.properties) {
-			const newProps = [];
-			for(const param of data.properties) newProps.push(new DocumentedParam(this, param));
-			this.directData.properties = newProps;
-		} else {
-			data.properties = [];
-		}
-	}
-
-	serialize() {
-		super.serialize();
-		const { name, description, type, access, meta, properties, readonly, scope } = this.directData;
-		return {
-			name,
-			description,
-			access,
-			readonly,
-			scope: scope !== 'instance' ? scope : undefined,
-			type: type.serialize(),
-			meta: meta.serialize(),
-			props: properties.map(p => p.serialize())
-		};
-	}
-}
 
 module.exports = DocumentedMember;

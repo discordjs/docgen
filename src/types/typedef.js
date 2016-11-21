@@ -3,6 +3,29 @@ const DocumentedItemMeta = require('./item-meta');
 const DocumentedVarType = require('./var-type');
 const DocumentedParam = require('./param');
 
+class DocumentedTypeDef extends DocumentedItem {
+	registerMetaInfo(data) {
+		this.props = new Map();
+		data.meta = new DocumentedItemMeta(this, data.meta);
+		data.type = new DocumentedVarType(this, data.type);
+		if(data.properties && data.properties.length > 0) {
+			for(const prop of data.properties) this.props.set(prop.name, new DocumentedParam(this, prop));
+		}
+		this.directData = data;
+	}
+
+	serialize() {
+		return {
+			name: this.directData.name,
+			description: this.directData.description,
+			access: this.directData.access,
+			type: this.directData.type.serialize(),
+			props: this.props ? Array.from(this.props.values()).map(p => p.serialize()) : undefined,
+			meta: this.directData.meta.serialize()
+		};
+	}
+}
+
 /*
 { id: 'StringResolvable',
   longname: 'StringResolvable',
@@ -17,31 +40,5 @@ const DocumentedParam = require('./param');
      path: 'src/client' },
   order: 37 }
 */
-
-class DocumentedTypeDef extends DocumentedItem {
-	registerMetaInfo(data) {
-		super.registerMetaInfo(data);
-		this.props = new Map();
-		this.directData = data;
-		this.directData.meta = new DocumentedItemMeta(this, data.meta);
-		this.directData.type = new DocumentedVarType(this, data.type);
-		data.properties = data.properties || [];
-		for(const prop of data.properties) this.props.set(prop.name, new DocumentedParam(this, prop));
-	}
-
-	serialize() {
-		super.serialize();
-		const { name, description, type, access, meta } = this.directData;
-		const serialized = {
-			name,
-			description,
-			type: type.serialize(),
-			access,
-			meta: meta.serialize()
-		};
-		serialized.properties = Array.from(this.props.values()).map(p => p.serialize());
-		return serialized;
-	}
-}
 
 module.exports = DocumentedTypeDef;

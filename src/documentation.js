@@ -89,6 +89,7 @@ class Documentation {
 			version,
 			date: Date.now()
 		};
+
 		const serialized = {
 			generator,
 			classes: Array.from(this.classes.values()).map(c => c.serialize()),
@@ -96,6 +97,7 @@ class Documentation {
 			typedefs: Array.from(this.typedefs.values()).map(t => t.serialize()),
 			custom: this.custom
 		};
+
 		return serialized;
 	}
 }

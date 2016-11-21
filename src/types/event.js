@@ -2,6 +2,25 @@ const DocumentedItem = require('./item');
 const DocumentedItemMeta = require('./item-meta');
 const DocumentedParam = require('./param');
 
+class DocumentedEvent extends DocumentedItem {
+	registerMetaInfo(data) {
+		data.meta = new DocumentedItemMeta(this, data.meta);
+		if(data.params && data.params.length > 0) {
+			for(let i = 0; i < data.params.length; i++) data.params[i] = new DocumentedParam(this, data.params[i]);
+		}
+		this.directData = data;
+	}
+
+	serialize() {
+		return {
+			name: this.directData.name,
+			description: this.directData.description,
+			params: this.directData.params ? this.directData.params.map(p => p.serialize()) : undefined,
+			meta: this.directData.meta.serialize()
+		};
+	}
+}
+
 /*
 {
   "id":"Client#event:guildMemberRolesUpdate",
@@ -48,27 +67,5 @@ const DocumentedParam = require('./param');
   "order":110
 }
 */
-
-class DocumentedEvent extends DocumentedItem {
-	registerMetaInfo(data) {
-		this.directData = data;
-		this.directData.meta = new DocumentedItemMeta(this, data.meta);
-		const newParams = [];
-		data.params = data.params || [];
-		for(const param of data.params) newParams.push(new DocumentedParam(this, param));
-		this.directData.params = newParams;
-	}
-
-	serialize() {
-		super.serialize();
-		const { name, description, meta, params } = this.directData;
-		return {
-			name,
-			description,
-			meta: meta.serialize(),
-			params: params.map(p => p.serialize())
-		};
-	}
-}
 
 module.exports = DocumentedEvent;

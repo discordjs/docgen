@@ -1,20 +1,5 @@
 const DocumentedClass = require('./class');
 
-/*
-{ id: 'TextBasedChannel',
-  longname: 'TextBasedChannel',
-  name: 'TextBasedChannel',
-  scope: 'global',
-  kind: 'interface',
-  classdesc: 'Interface for classes that have text-channel-like features',
-  params: [],
-  meta:
-   { lineno: 5,
-     filename: 'TextBasedChannel.js',
-     path: 'src/structures/interface' },
-  order: 175 }
-  */
-
 class DocumentedInterface extends DocumentedClass {
 	registerMetaInfo(data) {
 		super.registerMetaInfo(data);
@@ -28,5 +13,20 @@ class DocumentedInterface extends DocumentedClass {
 		return serialized;
 	}
 }
+
+/*
+{ id: 'TextBasedChannel',
+  longname: 'TextBasedChannel',
+  name: 'TextBasedChannel',
+  scope: 'global',
+  kind: 'interface',
+  classdesc: 'Interface for classes that have text-channel-like features',
+  params: [],
+  meta:
+   { lineno: 5,
+     filename: 'TextBasedChannel.js',
+     path: 'src/structures/interface' },
+  order: 175 }
+*/
 
 module.exports = DocumentedInterface;

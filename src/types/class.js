@@ -5,21 +5,6 @@ const DocumentedFunction = require('./function');
 const DocumentedMember = require('./member');
 const DocumentedEvent = require('./event');
 
-/*
-{ id: 'VoiceChannel',
-	longname: 'VoiceChannel',
-	name: 'VoiceChannel',
-	scope: 'global',
-	kind: 'class',
-	augments: [ 'GuildChannel' ],
-	description: 'Represents a Server Voice Channel on Discord.',
-	meta:
-	 { lineno: 7,
-		 filename: 'VoiceChannel.js',
-		 path: 'src/structures' },
-	order: 232 }
-	*/
-
 class DocumentedClass extends DocumentedItem {
 	constructor(docParent, data) {
 		super(docParent, data);
@@ -53,27 +38,38 @@ class DocumentedClass extends DocumentedItem {
 	}
 
 	registerMetaInfo(data) {
-		super.registerMetaInfo(data);
 		this.directData = data;
 		this.directData.meta = new DocumentedItemMeta(this, data.meta);
 	}
 
 	serialize() {
-		super.serialize();
-		const { name, description, meta, augments, access } = this.directData;
-		const serialized = {
-			name,
-			description,
-			meta: meta.serialize(),
-			extends: augments,
-			access
+		return {
+			name: this.directData.name,
+			description: this.directData.description,
+			extends: this.directData.augments,
+			access: this.directData.access,
+			classConstructor: this.classConstructor ? this.classConstructor.serialize() : undefined,
+			props: this.props.size > 0 ? Array.from(this.props.values()).map(p => p.serialize()) : undefined,
+			methods: this.methods.size > 0 ? Array.from(this.methods.values()).map(m => m.serialize()) : undefined,
+			events: this.events.size > 0 ? Array.from(this.events.values()).map(e => e.serialize()) : undefined,
+			meta: this.directData.meta.serialize()
 		};
-		if(this.classConstructor) serialized.classConstructor = this.classConstructor.serialize();
-		serialized.methods = Array.from(this.methods.values()).map(m => m.serialize());
-		serialized.properties = Array.from(this.props.values()).map(p => p.serialize());
-		serialized.events = Array.from(this.events.values()).map(e => e.serialize());
-		return serialized;
 	}
 }
+
+/*
+{ id: 'VoiceChannel',
+	longname: 'VoiceChannel',
+	name: 'VoiceChannel',
+	scope: 'global',
+	kind: 'class',
+	augments: [ 'GuildChannel' ],
+	description: 'Represents a Server Voice Channel on Discord.',
+	meta:
+	 { lineno: 7,
+		 filename: 'VoiceChannel.js',
+		 path: 'src/structures' },
+	order: 232 }
+*/
 
 module.exports = DocumentedClass;
