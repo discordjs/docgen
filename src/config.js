@@ -14,7 +14,7 @@ module.exports = yargs
 
 	.option('source', {
 		type: 'array',
-		alias: 's',
+		alias: ['s', 'i'],
 		describe: 'Source directories to parse JSDocs in',
 		demand: true,
 		normalize: true
