@@ -37,14 +37,13 @@ class DocumentedMember extends DocumentedItem {
 
 	serialize() {
 		super.serialize();
-		const { id, name, description, memberof, type, access, meta, properties, readonly } = this.directData;
+		const { name, description, type, access, meta, properties, readonly, scope } = this.directData;
 		return {
-			id,
 			name,
 			description,
-			memberof,
 			access,
 			readonly,
+			scope: scope !== 'instance' ? scope : undefined,
 			type: type.serialize(),
 			meta: meta.serialize(),
 			props: properties.map(p => p.serialize())

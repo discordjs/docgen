@@ -61,12 +61,10 @@ class DocumentedEvent extends DocumentedItem {
 
 	serialize() {
 		super.serialize();
-		const { id, name, description, memberof, meta, params } = this.directData;
+		const { name, description, meta, params } = this.directData;
 		return {
-			id,
 			name,
 			description,
-			memberof,
 			meta: meta.serialize(),
 			params: params.map(p => p.serialize())
 		};

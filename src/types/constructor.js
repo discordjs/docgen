@@ -27,12 +27,10 @@ class DocumentedConstructor extends DocumentedItem {
 
 	serialize() {
 		super.serialize();
-		const { id, name, description, memberof, access, params } = this.directData;
+		const { name, description, access, params } = this.directData;
 		return {
-			id,
 			name,
 			description,
-			memberof,
 			access,
 			params: params.map(p => p.serialize())
 		};

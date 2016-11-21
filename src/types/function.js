@@ -62,16 +62,11 @@ class DocumentedFunction extends DocumentedItem {
 
 	serialize() {
 		super.serialize();
-		const {
-			id, name, description, memberof, examples, inherits,
-			inherited, meta, returns, params, access, scope
-		} = this.directData;
+		const { name, description, examples, inherits, inherited, meta, returns, params, access, scope } = this.directData;
 		const serialized = {
-			id,
 			access,
 			name,
 			description,
-			memberof,
 			examples,
 			inherits,
 			inherited,

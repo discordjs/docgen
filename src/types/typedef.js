@@ -31,9 +31,8 @@ class DocumentedTypeDef extends DocumentedItem {
 
 	serialize() {
 		super.serialize();
-		const { id, name, description, type, access, meta } = this.directData;
+		const { name, description, type, access, meta } = this.directData;
 		const serialized = {
-			id,
 			name,
 			description,
 			type: type.serialize(),

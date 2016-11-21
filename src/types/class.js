@@ -60,9 +60,8 @@ class DocumentedClass extends DocumentedItem {
 
 	serialize() {
 		super.serialize();
-		const { id, name, description, meta, augments, access } = this.directData;
+		const { name, description, meta, augments, access } = this.directData;
 		const serialized = {
-			id,
 			name,
 			description,
 			meta: meta.serialize(),
