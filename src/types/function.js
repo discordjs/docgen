@@ -62,8 +62,10 @@ class DocumentedFunction extends DocumentedItem {
 
 	serialize() {
 		super.serialize();
-		const { id, name, description, memberof, examples, inherits, inherited, meta, returns, params, access } =
-			this.directData;
+		const {
+			id, name, description, memberof, examples, inherits,
+			inherited, meta, returns, params, access, scope
+		} = this.directData;
 		const serialized = {
 			id,
 			access,
@@ -73,11 +75,12 @@ class DocumentedFunction extends DocumentedItem {
 			examples,
 			inherits,
 			inherited,
+			implements: this.directData.implements,
+			scope: scope !== 'instance' ? scope : undefined,
 			meta: meta.serialize(),
 			returns: returns.serialize(),
 			params: params.map(p => p.serialize())
 		};
-		serialized.implements = this.directData.implements;
 		return serialized;
 	}
 }

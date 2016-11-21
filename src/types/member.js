@@ -28,9 +28,7 @@ class DocumentedMember extends DocumentedItem {
 		this.directData.type = new DocumentedVarType(this, data.type);
 		if(data.properties) {
 			const newProps = [];
-			for(const param of data.properties) {
-				newProps.push(new DocumentedParam(this, param));
-			}
+			for(const param of data.properties) newProps.push(new DocumentedParam(this, param));
 			this.directData.properties = newProps;
 		} else {
 			data.properties = [];
@@ -39,14 +37,15 @@ class DocumentedMember extends DocumentedItem {
 
 	serialize() {
 		super.serialize();
-		const { id, name, description, memberof, type, access, meta, properties } = this.directData;
+		const { id, name, description, memberof, type, access, meta, properties, readonly } = this.directData;
 		return {
 			id,
 			name,
 			description,
 			memberof,
-			type: type.serialize(),
 			access,
+			readonly,
+			type: type.serialize(),
 			meta: meta.serialize(),
 			props: properties.map(p => p.serialize())
 		};
