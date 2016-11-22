@@ -64,7 +64,7 @@ Promise.all(mainPromises).then(results => {
 	const custom = results[1];
 
 	console.log(`${data.length} JSDoc items found.`);
-	const fileCount = Object.values(custom).reduce((prev, c) => prev + c.length, 0);
+	const fileCount = Object.keys(custom).map(k => custom[k]).reduce((prev, c) => prev + c.length, 0);
 	const categoryCount = Object.keys(custom).length;
 	console.log(`${fileCount} custom docs files found in ${categoryCount} categor${categoryCount !== 1 ? 'ies' : 'y'}.`);
 
