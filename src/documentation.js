@@ -6,6 +6,7 @@ const DocumentedMember = require('./types/member');
 const DocumentedFunction = require('./types/function');
 const DocumentedEvent = require('./types/event');
 const version = require('../package').version;
+const formatVersion = 15;
 
 /**
  * Class that does stuff
@@ -90,13 +91,14 @@ class Documentation {
 	}
 
 	serialize() {
-		const generator = {
-			version,
+		const meta = {
+			generator: version,
+			version: formatVersion,
 			date: Date.now()
 		};
 
 		const serialized = {
-			generator,
+			meta,
 			classes: Array.from(this.classes.values()).map(c => c.serialize()),
 			interfaces: Array.from(this.interfaces.values()).map(i => i.serialize()),
 			typedefs: Array.from(this.typedefs.values()).map(t => t.serialize()),
