@@ -6,7 +6,6 @@ const DocumentedMember = require('./types/member');
 const DocumentedFunction = require('./types/function');
 const DocumentedEvent = require('./types/event');
 const version = require('../package').version;
-const formatVersion = 15;
 
 /**
  * Class that does stuff
@@ -93,7 +92,7 @@ class Documentation {
 	serialize() {
 		const meta = {
 			generator: version,
-			version: formatVersion,
+			version: this.constructor.FORMAT_VERSION,
 			date: Date.now()
 		};
 
@@ -106,6 +105,10 @@ class Documentation {
 		};
 
 		return serialized;
+	}
+
+	static get FORMAT_VERSION() {
+		return 15;
 	}
 }
 
