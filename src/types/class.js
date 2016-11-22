@@ -15,10 +15,10 @@ class DocumentedClass extends DocumentedItem {
 
 	add(item) {
 		if(item instanceof DocumentedConstructor) {
-			if(this.classConstructor) {
-				throw new Error(`Doc ${this.directData.name} already has constructor - ${this.directData.classConstructor}`);
+			if(this.construct) {
+				throw new Error(`Doc ${this.directData.name} already has constructor - ${this.directData.construct}`);
 			}
-			this.classConstructor = item;
+			this.construct = item;
 		} else if(item instanceof DocumentedFunction) {
 			if(this.methods.get(item.directData.name)) {
 				throw new Error(`Doc ${this.directData.name} already has method ${item.directData.name}`);
@@ -48,7 +48,7 @@ class DocumentedClass extends DocumentedItem {
 			description: this.directData.description,
 			extends: this.directData.augments,
 			access: this.directData.access,
-			classConstructor: this.classConstructor ? this.classConstructor.serialize() : undefined,
+			construct: this.construct ? this.construct.serialize() : undefined,
 			props: this.props.size > 0 ? Array.from(this.props.values()).map(p => p.serialize()) : undefined,
 			methods: this.methods.size > 0 ? Array.from(this.methods.values()).map(m => m.serialize()) : undefined,
 			events: this.events.size > 0 ? Array.from(this.events.values()).map(e => e.serialize()) : undefined,
