@@ -12,6 +12,9 @@ const version = require('../package').version;
  */
 class Documentation {
 	constructor(items, custom) {
+		this.knownParentKinds = new Set(['constructor', 'member', 'function', 'event']);
+		this.knownRootKinds = new Set(['class', 'interface', 'typedef']);
+
 		this.classes = new Map();
 		this.interfaces = new Map();
 		this.typedefs = new Map();
@@ -38,7 +41,7 @@ class Documentation {
 	}
 
 	findParent(item) {
-		if(['constructor', 'member', 'function', 'event'].includes(item.kind)) {
+		if(this.knownParentKinds.has(item.kind)) {
 			let val = this.classes.get(item.memberof);
 			if(val) return val;
 			val = this.interfaces.get(item.memberof);
@@ -48,8 +51,8 @@ class Documentation {
 	}
 
 	parse(items) {
-		this.registerRoots(items.filter(item => ['class', 'interface', 'typedef'].includes(item.kind)));
-		const members = items.filter(item => !['class', 'interface', 'typedef'].includes(item.kind));
+		this.registerRoots(items.filter(item => this.knownRootKinds.has(item.kind)));
+		const members = items.filter(item => !this.knownRootKinds.has(item.kind));
 		const unknowns = new Map();
 
 		for(const member of members) {
