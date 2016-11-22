@@ -5,11 +5,16 @@ const DocumentedParam = require('./param');
 
 class DocumentedTypeDef extends DocumentedItem {
 	registerMetaInfo(data) {
-		this.props = new Map();
 		data.meta = new DocumentedItemMeta(this, data.meta);
 		data.type = new DocumentedVarType(this, data.type);
-		if(data.properties && data.properties.length > 0) {
-			for(const prop of data.properties) this.props.set(prop.name, new DocumentedParam(this, prop));
+		if(data.properties) {
+			if(data.properties.length > 0) {
+				for(let i = 0; i < data.properties.length; i++) {
+					data.properties[i] = new DocumentedParam(this, data.properties[i]);
+				}
+			} else {
+				data.properties = undefined;
+			}
 		}
 		this.directData = data;
 	}
@@ -20,7 +25,7 @@ class DocumentedTypeDef extends DocumentedItem {
 			description: this.directData.description,
 			access: this.directData.access,
 			type: this.directData.type.serialize(),
-			props: this.props ? Array.from(this.props.values()).map(p => p.serialize()) : undefined,
+			props: this.directData.properties ? this.directData.properties.map(p => p.serialize()) : undefined,
 			meta: this.directData.meta.serialize()
 		};
 	}

@@ -10,8 +10,12 @@ class DocumentedFunction extends DocumentedItem {
 			if(data.returns[0].description) this.returnsDescription = data.returns[0].description;
 			data.returns = new DocumentedVarType(this, data.returns[0].type);
 		}
-		if(data.params && data.params.length > 0) {
-			for(let i = 0; i < data.params.length; i++) data.params[i] = new DocumentedParam(this, data.params[i]);
+		if(data.params) {
+			if(data.params.length > 0) {
+				for(let i = 0; i < data.params.length; i++) data.params[i] = new DocumentedParam(this, data.params[i]);
+			} else {
+				data.params = undefined;
+			}
 		}
 		this.directData = data;
 	}
