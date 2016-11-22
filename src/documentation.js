@@ -77,7 +77,9 @@ class Documentation {
 
 			const parent = this.findParent(member);
 			if(!parent) {
-				console.warn(`- "${member.name || member.directData.name}" has no accessible parent.`);
+				let memberof = member.memberof || member.directData.memberof;
+				if(memberof) memberof = ` (member of "${memberof}")`;
+				console.warn(`- "${member.name || member.directData.name}"${memberof} has no accessible parent.`);
 				continue;
 			}
 			parent.add(item);

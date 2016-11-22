@@ -7,7 +7,7 @@
 		"docgen": "src/index.js"
 	},
 	"scripts": {
-		"test": "eslint src && node --harmony src --source test/src --custom test/docs --output test/docs/docs.json --spaces 2",
+		"test": "eslint src && node src --source test/src --custom test/docs --output test/docs/docs.json --spaces 2",
 		"lint": "eslint src"
 	},
 	"repository": {
@@ -43,6 +43,6 @@
 		"yargs": "^6.4.0"
 	},
 	"engines": {
-		"node": ">=7.0.0"
+		"node": ">=6.0.0"
 	}
 }

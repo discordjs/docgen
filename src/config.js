@@ -37,6 +37,12 @@ module.exports = yargs
 		describe: 'Number of spaces to use in output JSON',
 		default: 0
 	})
+	.option('verbose', {
+		type: 'boolean',
+		alias: 'V',
+		describe: 'Logs extra information to the console',
+		default: false
+	})
 
 	.option('config', {
 		type: 'string',

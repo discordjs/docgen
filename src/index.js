@@ -5,49 +5,72 @@ const jsdoc2md = require('jsdoc-to-markdown');
 const Documentation = require('./documentation');
 const config = require('./config');
 
-(async () => {
+const mainPromises = [null, null];
+
+// Parse the JSDocs in all source directories
+console.log('Parsing JSDocs in source files...');
+const files = [];
+for(const dir of config.source) files.push(`${dir}/*.js`, `${dir}/**/*.js`);
+mainPromises[0] = jsdoc2md.getTemplateData({ files });
+
+// Load the custom docs files
+if(config.custom) {
+	console.log('Loading custom docs files...');
+	const walkPromises = [];
 	const custom = {};
 
-	if(config.custom) {
-		console.log('Loading custom docs files...');
-		const promises = [];
+	for(let dir of config.custom) {
+		dir = path.resolve(dir);
+		walkPromises.push(fs.walk(dir, {
+			filter: item => {
+				// Make sure we're only going one level deep
+				const sepMatches = path.relative(dir, item).match(/\/|\\/g);
+				return !sepMatches || sepMatches.length === 1;
+			}
+		}).then(items => {
+			const readPromises = [];
 
-		for(const dir of config.custom) {
-			promises.push(fs.readdir(dir).then(async dirs => {
-				for(const subdir of dirs) {
-					const full = path.resolve(dir, subdir);
-					if(!(await fs.stat(full)).isDirectory()) continue;
-					custom[subdir] = [];
+			for(const item of items) {
+				// Ensure we're loading a file, and the file isn't in the base directory
+				if(!item.stats.isFile()) continue;
+				const dirname = path.dirname(item.path);
+				if(dirname === dir) continue;
 
-					const files = await fs.readdir(path.resolve(dir, subdir));
-					for(const file of files) {
-						const fullFile = path.resolve(full, file);
-						if(!(await fs.stat(fullFile)).isFile()) continue;
+				// Read the file and add an entry for it
+				readPromises.push(fs.readFile(item.path, { encoding: 'utf-8' }).then(content => {
+					const dirBasename = path.basename(dirname);
+					if(!custom[dirBasename]) custom[dirBasename] = [];
 
-						const extension = path.extname(fullFile);
-						custom[subdir].push({
-							name: path.basename(fullFile, extension),
-							type: extension.replace(/^\./, ''),
-							content: await fs.readFile(fullFile, { encoding: 'utf-8' })
-						});
-					}
-				}
-			}));
-		}
+					const extension = path.extname(item.path);
+					custom[dirBasename].push({
+						name: path.basename(item.path, extension),
+						type: extension.replace(/^\./, ''),
+						content
+					});
 
-		await Promise.all(promises);
+					if(config.verbose) console.log(`Loaded custom docs file ${item.path}`);
+				}));
+			}
+
+			return Promise.all(readPromises);
+		}));
 	}
 
-	console.log('Parsing JSDocs in source files...');
-	const files = [];
-	for(const dir of config.source) files.push(`${dir}/*.js`, `${dir}/**/*.js`);
-	const data = await jsdoc2md.getTemplateData({ files });
+	mainPromises[1] = Promise.all(walkPromises).then(() => custom);
+}
 
-	console.log(`${data.length} items found.`);
-	const documentation = new Documentation(data, custom);
+Promise.all(mainPromises).then(results => {
+	const data = results[0];
+	const custom = results[1];
+
+	console.log(`${data.length} JSDoc items found.`);
+	const fileCount = Object.values(custom).reduce((prev, c) => prev + c.length, 0);
+	const categoryCount = Object.keys(custom).length;
+	console.log(`${fileCount} custom docs files found in ${categoryCount} categor${categoryCount !== 1 ? 'ies' : 'y'}.`);
 
 	console.log('Serializing...');
-	let output = JSON.stringify(documentation.serialize(), null, config.spaces);
+	const docs = new Documentation(data, custom);
+	let output = JSON.stringify(docs.serialize(), null, config.spaces);
 
 	if(config.compress) {
 		console.log('Compressing...');
@@ -61,4 +84,4 @@ const config = require('./config');
 
 	console.log('Done!');
 	process.exit(0);
-})().catch(console.error);
+}).catch(console.error);
