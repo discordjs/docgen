@@ -68,7 +68,7 @@ Promise.all(mainPromises).then(results => {
 	const categoryCount = Object.keys(custom).length;
 	console.log(`${fileCount} custom docs files found in ${categoryCount} categor${categoryCount !== 1 ? 'ies' : 'y'}.`);
 
-	console.log('Serializing...');
+	console.log(`Serializing documentation with format version ${Documentation.FORMAT_VERSION}...`);
 	const docs = new Documentation(data, custom);
 	let output = JSON.stringify(docs.serialize(), null, config.spaces);
 
