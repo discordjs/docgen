@@ -27,9 +27,8 @@ const config = require('./config');
 						const extension = path.extname(fullFile);
 						custom[subdir].push({
 							name: path.basename(fullFile, extension),
-							category: subdir,
 							type: extension.replace(/^\./, ''),
-							data: await fs.readFile(fullFile, { encoding: 'utf-8' })
+							content: await fs.readFile(fullFile, { encoding: 'utf-8' })
 						});
 					}
 				}
