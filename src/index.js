@@ -13,7 +13,7 @@ const files = [];
 for(const dir of config.source) files.push(`${dir}/*.js`, `${dir}/**/*.js`);
 mainPromises[0] = jsdoc2md.getTemplateData({ files });
 
-// Load the custom docs files
+// Load the custom docs files in all custom directories
 if(config.custom) {
 	console.log('Loading custom docs files...');
 	const walkPromises = [];
