@@ -1,15 +1,12 @@
 const yargs = require('yargs');
-const version = require('../package').version;
+const { version, homepage } = require('../package');
 
 module.exports = yargs
 	.usage('$0 [command] [options]')
 	.example('$0 --source src --custom docs --output docs/docs.json')
 	.example('$0 --config docgen.yml', 'Runs the generator using a config file')
 	.example('$0 completion', 'Outputs Bash completion script')
-	.epilogue(
-		'discord.js-docgen v${version} by Amish Shah (Hydrabolt) and Schuyler Cebulskie (Gawdl3y): ' +
-		'https://github.com/Gawdl3y/discord.js-docgen/'
-	)
+	.epilogue(`discord.js-docgen v${version} by Amish Shah (Hydrabolt) and Schuyler Cebulskie (Gawdl3y): ${homepage}`)
 
 	.option('source', {
 		type: 'array',
