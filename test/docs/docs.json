@@ -1,45 +1,36 @@
 {
-  "meta": {
+  "generator": {
     "version": "0.1.0",
-    "date": 1479713703456
+    "date": 1479782199920
   },
   "classes": [
     {
-      "id": "SomeClass",
       "name": "SomeClass",
-      "meta": {
-        "line": 5,
-        "file": "SomeClass.js",
-        "path": "test/src"
-      },
       "classConstructor": {
-        "id": "SomeClass()",
         "name": "SomeClass",
         "description": "Constructs a thing.",
-        "memberof": "SomeClass",
         "params": []
       },
-      "methods": [
+      "props": [
         {
-          "id": "SomeClass#doStuff",
-          "name": "doStuff",
-          "description": "Does stuff.",
-          "memberof": "SomeClass",
-          "meta": {
-            "line": 17,
-            "file": "SomeClass.js",
-            "path": "test/src"
-          },
-          "returns": {
+          "name": "thing",
+          "description": "Just some thing",
+          "type": {
             "types": [
               [
                 [
-                  "void",
+                  "number",
                   ""
                 ]
               ]
             ]
-          },
+          }
+        }
+      ],
+      "methods": [
+        {
+          "name": "doStuff",
+          "description": "Does stuff.",
           "params": [
             {
               "name": "stuff",
@@ -55,29 +46,19 @@
                 ]
               }
             }
-          ]
+          ],
+          "meta": {
+            "line": 17,
+            "file": "SomeClass.js",
+            "path": "test/src"
+          }
         }
       ],
-      "properties": [
-        {
-          "id": "SomeClass#thing",
-          "name": "thing",
-          "description": "Just some thing",
-          "memberof": "SomeClass",
-          "type": {
-            "types": [
-              [
-                [
-                  "number",
-                  ""
-                ]
-              ]
-            ]
-          },
-          "props": []
-        }
-      ],
-      "events": []
+      "meta": {
+        "line": 5,
+        "file": "SomeClass.js",
+        "path": "test/src"
+      }
     }
   ],
   "interfaces": [],
