@@ -6,7 +6,10 @@ const DocumentedParam = require('./param');
 class DocumentedFunction extends DocumentedItem {
 	registerMetaInfo(data) {
 		data.meta = new DocumentedItemMeta(this, data.meta);
-		if(data.returns) data.returns = new DocumentedVarType(this, data.returns[0].type);
+		if(data.returns) {
+			if(data.returns[0].description) this.returnsDescription = data.returns[0].description;
+			data.returns = new DocumentedVarType(this, data.returns[0].type);
+		}
 		if(data.params && data.params.length > 0) {
 			for(let i = 0; i < data.params.length; i++) data.params[i] = new DocumentedParam(this, data.params[i]);
 		}
@@ -25,6 +28,7 @@ class DocumentedFunction extends DocumentedItem {
 			examples: this.directData.examples,
 			params: this.directData.params ? this.directData.params.map(p => p.serialize()) : undefined,
 			returns: this.directData.returns ? this.directData.returns.serialize() : undefined,
+			returnsDescription: this.directData.returnsDescription,
 			meta: this.directData.meta.serialize()
 		};
 	}
