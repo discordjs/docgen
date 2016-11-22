@@ -1,4 +1,4 @@
-#!/usr/bin/env node --harmony
+#!/usr/bin/env node
 const fs = require('fs-promise');
 const path = require('path');
 const jsdoc2md = require('jsdoc-to-markdown');
