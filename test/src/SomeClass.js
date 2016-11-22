@@ -36,7 +36,7 @@ class ClassyClass extends EventEmitter {
 
 		/**
 		 * Emitted when a thing is done
-		 * @event SomeClass#thingDone
+		 * @event ClassyClass#thingDone
 		 * @param {SomeThing} thingy Thing
 		 */
 		this.emit('thingDone', 4242424242);
