@@ -11,7 +11,10 @@ const mainPromises = [null, null];
 console.log('Parsing JSDocs in source files...');
 const files = [];
 for(const dir of config.source) files.push(`${dir}/*.js`, `${dir}/**/*.js`);
-mainPromises[0] = jsdoc2md.getTemplateData({ files });
+mainPromises[0] = jsdoc2md.getTemplateData({ files }).then(data => {
+	console.log(`${data.length} JSDoc items parsed.`);
+	return data;
+});
 
 // Load the custom docs
 if(config.custom) {
@@ -57,21 +60,21 @@ if(config.custom) {
 			}
 		}
 
-		return Promise.all(filePromises).then(() => custom);
+		return Promise.all(filePromises).then(() => {
+			const fileCount = Object.keys(custom).map(k => custom[k]).reduce((prev, c) => prev + c.length, 0);
+			const categoryCount = Object.keys(custom).length;
+			console.log(
+				`${fileCount} custom doc${fileCount !== 1 ? 's' : ''} files found in ` +
+				`${categoryCount} categor${categoryCount !== 1 ? 'ies' : 'y'}.`
+			);
+			return custom;
+		});
 	});
 }
 
 Promise.all(mainPromises).then(results => {
 	const data = results[0];
 	const custom = results[1];
-
-	console.log(`${data.length} JSDoc items found.`);
-	const fileCount = Object.keys(custom).map(k => custom[k]).reduce((prev, c) => prev + c.length, 0);
-	const categoryCount = Object.keys(custom).length;
-	console.log(
-		`${fileCount} custom doc${fileCount !== 1 ? 's' : ''} files found in ` +
-		`${categoryCount} categor${categoryCount !== 1 ? 'ies' : 'y'}.`
-	);
 
 	console.log(`Serializing documentation with format version ${Documentation.FORMAT_VERSION}...`);
 	const docs = new Documentation(data, custom);
