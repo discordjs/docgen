@@ -38,19 +38,20 @@ if(config.custom) {
 			// Add the category to the custom docs
 			const catID = category.catID || category.path || category.name.toLowerCase();
 			const dir = path.join(customDir, category.path || catID);
-			custom[catID] = [];
+			custom[catID] = new Array(category.files.length);
 
 			// Add every file in the category
-			for(const file of category.files) {
+			for(let f = 0; f < category.files.length; f++) {
+				const file = category.files[f];
 				filePromises.push(fs.readFile(path.join(dir, file.path), 'utf-8').then(content => {
 					const extension = path.extname(file.path);
 					const fileID = file.id || path.basename(file.path, extension);
-					custom[catID].push({
+					custom[catID][f] = {
 						id: fileID,
 						name: file.name,
 						type: extension.replace(/^\./, ''),
 						content
-					});
+					};
 					if(config.verbose) console.log(`Loaded custom docs file ${catID}/${fileID}`);
 				}));
 			}
