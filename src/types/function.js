@@ -7,8 +7,10 @@ class DocumentedFunction extends DocumentedItem {
 	registerMetaInfo(data) {
 		data.meta = new DocumentedItemMeta(this, data.meta);
 		if(data.returns) {
-			if(data.returns[0].description) this.returnsDescription = data.returns[0].description;
+			let returnDescription;
+			if(data.returns[0].description) returnDescription = data.returns[0].description;
 			data.returns = new DocumentedVarType(this, data.returns[0].type);
+			data.returns.directData.description = returnDescription;
 		}
 		if(data.params) {
 			if(data.params.length > 0) {

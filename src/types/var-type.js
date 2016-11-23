@@ -8,7 +8,7 @@ class DocumentedVarType extends DocumentedItem {
 	serialize() {
 		const names = [];
 		for(const name of this.directData.names) names.push(this.constructor.splitVarName(name));
-		return { types: names };
+		return { types: names, description: this.directData.description };
 	}
 
 	static splitVarName(str) {
