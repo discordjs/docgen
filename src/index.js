@@ -13,50 +13,51 @@ const files = [];
 for(const dir of config.source) files.push(`${dir}/*.js`, `${dir}/**/*.js`);
 mainPromises[0] = jsdoc2md.getTemplateData({ files });
 
-// Load the custom docs files in all custom directories
+// Load the custom docs
 if(config.custom) {
 	console.log('Loading custom docs files...');
-	const walkPromises = [];
-	const custom = {};
+	const customDir = path.dirname(config.custom);
 
-	for(let dir of config.custom) {
-		dir = path.resolve(dir);
-		walkPromises.push(fs.walk(dir, {
-			filter: item => {
-				// Make sure we're only going one level deep
-				const sepMatches = path.relative(dir, item).match(/\/|\\/g);
-				return !sepMatches || sepMatches.length === 1;
-			}
-		}).then(items => {
-			const readPromises = [];
+	// Figure out what type of definitions file we're loading
+	let type;
+	const defExtension = path.extname(config.custom).toLowerCase();
+	if(defExtension === '.json') type = 'json';
+	else if(defExtension === '.yml' || defExtension === '.yaml') type = 'yaml';
+	else throw new TypeError('Unknown custom docs definition file type.');
 
-			for(const item of items) {
-				// Ensure we're loading a file, and the file isn't in the base directory
-				if(!item.stats.isFile()) continue;
-				const dirname = path.dirname(item.path);
-				if(dirname === dir) continue;
+	mainPromises[1] = fs.readFile(config.custom, 'utf-8').then(defContent => {
+		// Parse the definition file
+		let definitions;
+		if(type === 'json') definitions = JSON.parse(defContent);
+		else definitions = require('js-yaml').safeLoad(defContent);
 
-				// Read the file and add an entry for it
-				readPromises.push(fs.readFile(item.path, { encoding: 'utf-8' }).then(content => {
-					const dirBasename = path.basename(dirname);
-					if(!custom[dirBasename]) custom[dirBasename] = [];
+		const custom = {};
+		const filePromises = [];
 
-					const extension = path.extname(item.path);
-					custom[dirBasename].push({
-						name: path.basename(item.path, extension),
+		for(const category of definitions) {
+			// Add the category to the custom docs
+			const catID = category.catID || category.path || category.name.toLowerCase();
+			const dir = path.join(customDir, category.path || catID);
+			custom[catID] = [];
+
+			// Add every file in the category
+			for(const file of category.files) {
+				filePromises.push(fs.readFile(path.join(dir, file.path), 'utf-8').then(content => {
+					const extension = path.extname(file.path);
+					const fileID = file.id || path.basename(file.path, extension);
+					custom[catID].push({
+						id: fileID,
+						name: file.name,
 						type: extension.replace(/^\./, ''),
 						content
 					});
-
-					if(config.verbose) console.log(`Loaded custom docs file ${item.path}`);
+					if(config.verbose) console.log(`Loaded custom docs file ${catID}/${fileID}`);
 				}));
 			}
+		}
 
-			return Promise.all(readPromises);
-		}));
-	}
-
-	mainPromises[1] = Promise.all(walkPromises).then(() => custom);
+		return Promise.all(filePromises).then(() => custom);
+	});
 }
 
 Promise.all(mainPromises).then(results => {
@@ -66,7 +67,10 @@ Promise.all(mainPromises).then(results => {
 	console.log(`${data.length} JSDoc items found.`);
 	const fileCount = Object.keys(custom).map(k => custom[k]).reduce((prev, c) => prev + c.length, 0);
 	const categoryCount = Object.keys(custom).length;
-	console.log(`${fileCount} custom docs files found in ${categoryCount} categor${categoryCount !== 1 ? 'ies' : 'y'}.`);
+	console.log(
+		`${fileCount} custom doc${fileCount !== 1 ? 's' : ''} files found in ` +
+		`${categoryCount} categor${categoryCount !== 1 ? 'ies' : 'y'}.`
+	);
 
 	console.log(`Serializing documentation with format version ${Documentation.FORMAT_VERSION}...`);
 	const docs = new Documentation(data, custom);

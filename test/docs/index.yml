@@ -1,0 +1,10 @@
+- name: General
+  files:
+    - name: Cool guys are cool
+      path: Cool.md
+    - name: Hey there
+      path: Heya.md
+- name: Examples
+  files:
+    - name: Blah
+      path: blah.js

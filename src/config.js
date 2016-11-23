@@ -16,9 +16,9 @@ module.exports = yargs
 		normalize: true
 	})
 	.option('custom', {
-		type: 'array',
+		type: 'string',
 		alias: 'c',
-		describe: 'Directories containing custom Markdown docs pages',
+		describe: 'Custom docs definition file to use',
 		normalize: true
 	})
 	.option('output', {
