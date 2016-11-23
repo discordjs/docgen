@@ -4,10 +4,11 @@ const cwd = `${process.cwd()}\\`.replace(/\\/g, '/');
 
 class DocumentedItemMeta extends DocumentedItem {
 	registerMetaInfo(data) {
-		this.directData = {};
-		this.directData.line = data.lineno;
-		this.directData.file = data.filename;
-		this.directData.path = data.path.replace(/\\/g, '/').replace(cwd, '');
+		this.directData = {
+			line: data.lineno,
+			file: data.filename,
+			path: data.path.replace(/\\/g, '/').replace(cwd, '')
+		};
 	}
 
 	serialize() {
