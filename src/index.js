@@ -64,8 +64,8 @@ if(config.custom) {
 			const fileCount = Object.keys(custom).map(k => custom[k]).reduce((prev, c) => prev + c.length, 0);
 			const categoryCount = Object.keys(custom).length;
 			console.log(
-				`${fileCount} custom doc${fileCount !== 1 ? 's' : ''} files found in ` +
-				`${categoryCount} categor${categoryCount !== 1 ? 'ies' : 'y'}.`
+				`${fileCount} custom docs file${fileCount !== 1 ? 's' : ''} in ` +
+				`${categoryCount} categor${categoryCount !== 1 ? 'ies' : 'y'} loaded.`
 			);
 			return custom;
 		});
