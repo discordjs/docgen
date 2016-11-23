@@ -52,7 +52,7 @@ if(config.custom) {
 					custom[catID][f] = {
 						id: fileID,
 						name: file.name,
-						type: extension.replace(/^\./, ''),
+						type: extension.toLowerCase().replace(/^\./, ''),
 						content
 					};
 					if(config.verbose) console.log(`Loaded custom docs file ${catID}/${fileID}`);
