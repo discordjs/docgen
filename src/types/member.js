@@ -1,5 +1,5 @@
 const DocumentedItem = require('./item');
-const DocumentedItemMeta = require('./item');
+const DocumentedItemMeta = require('./item-meta');
 const DocumentedVarType = require('./var-type');
 const DocumentedParam = require('./param');
 
