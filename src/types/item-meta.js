@@ -1,13 +1,12 @@
 const DocumentedItem = require('./item');
-
-const cwd = `${process.cwd()}\\`.replace(/\\/g, '/');
+const { root } = require('../config');
 
 class DocumentedItemMeta extends DocumentedItem {
 	registerMetaInfo(data) {
 		this.directData = {
 			line: data.lineno,
 			file: data.filename,
-			path: data.path.replace(/\\/g, '/').replace(cwd, '')
+			path: data.path.replace(root, '').replace(/\\/g, '/')
 		};
 	}
 

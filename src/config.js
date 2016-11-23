@@ -21,6 +21,13 @@ module.exports = yargs
 		describe: 'Custom docs definition file to use',
 		normalize: true
 	})
+	.option('root', {
+		type: 'string',
+		alias: 'r',
+		describe: 'Root directory of the project',
+		normalize: true,
+		default: process.cwd()
+	})
 	.option('output', {
 		type: 'string',
 		alias: 'o',
