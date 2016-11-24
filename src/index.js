@@ -5,6 +5,7 @@ const jsdoc2md = require('jsdoc-to-markdown');
 const Documentation = require('./documentation');
 const config = require('./config');
 
+if(config.verbose) console.log('Running with config: ', config);
 const mainPromises = [null, null];
 
 // Parse the JSDocs in all source directories
