@@ -40,6 +40,12 @@ module.exports = yargs
 		describe: 'Number of spaces to use in output JSON',
 		default: 0
 	})
+	.option('jsdoc', {
+		type: 'string',
+		alias: 'j',
+		describe: 'Path to JSDoc config file',
+		normalize: true
+	})
 	.option('verbose', {
 		type: 'boolean',
 		alias: 'V',

@@ -12,7 +12,7 @@ const mainPromises = [null, null];
 console.log('Parsing JSDocs in source files...');
 const files = [];
 for(const dir of config.source) files.push(`${dir}/*.js`, `${dir}/**/*.js`);
-mainPromises[0] = jsdoc2md.getTemplateData({ files }).then(data => {
+mainPromises[0] = jsdoc2md.getTemplateData({ files, configure: config.jsdoc }).then(data => {
 	console.log(`${data.length} JSDoc items parsed.`);
 	return data;
 });
