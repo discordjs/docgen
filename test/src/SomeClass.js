@@ -49,6 +49,11 @@ class ClassyClass extends EventEmitter {
  * @property {number} someNumber A really cool number
  */
 
+ /**
+  * @external ClientOptions
+  * @see {@link http://hydrabolt.github.io/discord.js/#!/docs/tag/master/typedef/ClientOptions}
+  */
+
 /**
  * Oh boy, an export!
  * @type {function}
