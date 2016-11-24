@@ -1,6 +1,6 @@
 {
 	"name": "discord.js-docgen",
-	"version": "0.2.0",
+	"version": "0.2.1",
 	"description": "The docs.json generator for discord.js and its related projects",
 	"main": "index.js",
 	"bin": {
