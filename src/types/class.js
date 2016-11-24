@@ -20,10 +20,11 @@ class DocumentedClass extends DocumentedItem {
 			}
 			this.construct = item;
 		} else if(item instanceof DocumentedFunction) {
-			if(this.methods.has(item.directData.name)) {
+			const prefix = item.directData.scope === 'static' ? 's-' : '';
+			if(this.methods.has(prefix + item.directData.name)) {
 				throw new Error(`Doc ${this.directData.name} already has method ${item.directData.name}`);
 			}
-			this.methods.set(item.directData.name, item);
+			this.methods.set(prefix + item.directData.name, item);
 		} else if(item instanceof DocumentedMember) {
 			if(this.props.has(item.directData.name)) {
 				throw new Error(`Doc ${this.directData.name} already has prop ${item.directData.name}`);
