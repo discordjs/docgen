@@ -1,3 +1,4 @@
+const path = require('path');
 const DocumentedItem = require('./item');
 const { root } = require('../config');
 
@@ -6,7 +7,7 @@ class DocumentedItemMeta extends DocumentedItem {
 		this.directData = {
 			line: data.lineno,
 			file: data.filename,
-			path: data.path.replace(root, '').replace(/\\/g, '/')
+			path: path.relative(root, data.path).replace(/\\/g, '/')
 		};
 	}
 
