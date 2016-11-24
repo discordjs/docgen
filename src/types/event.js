@@ -19,6 +19,7 @@ class DocumentedEvent extends DocumentedItem {
 		return {
 			name: this.directData.name,
 			description: this.directData.description,
+			see: this.directData.see,
 			params: this.directData.params ? this.directData.params.map(p => p.serialize()) : undefined,
 			meta: this.directData.meta.serialize()
 		};

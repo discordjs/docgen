@@ -26,6 +26,7 @@ class DocumentedFunction extends DocumentedItem {
 		return {
 			name: this.directData.name,
 			description: this.directData.description,
+			see: this.directData.see,
 			scope: this.directData.scope !== 'instance' ? this.directData.scope : undefined,
 			access: this.directData.access,
 			inherits: this.directData.inherits,

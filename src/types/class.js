@@ -46,6 +46,7 @@ class DocumentedClass extends DocumentedItem {
 		return {
 			name: this.directData.name,
 			description: this.directData.description,
+			see: this.directData.see,
 			extends: this.directData.augments,
 			access: this.directData.access,
 			construct: this.construct ? this.construct.serialize() : undefined,

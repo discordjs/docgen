@@ -17,6 +17,7 @@ class DocumentedConstructor extends DocumentedItem {
 		return {
 			name: this.directData.name,
 			description: this.directData.description,
+			see: this.directData.see,
 			access: this.directData.access,
 			params: this.directData.params ? this.directData.params.map(p => p.serialize()) : undefined
 		};
