@@ -14,6 +14,7 @@ class DocumentedParam extends DocumentedItem {
 			optional: this.directData.optional,
 			default: this.directData.defaultvalue,
 			variable: this.directData.variable,
+			nullable: this.directData.nullable,
 			type: this.directData.type.serialize()
 		};
 	}

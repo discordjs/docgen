@@ -27,6 +27,7 @@ class DocumentedMember extends DocumentedItem {
 			scope: this.directData.scope !== 'instance' ? this.directData.scope : undefined,
 			access: this.directData.access,
 			readonly: this.directData.readonly,
+			nullable: this.directData.nullable,
 			type: this.directData.type.serialize(),
 			props: this.directData.properties ? this.directData.properties.map(p => p.serialize()) : undefined,
 			meta: this.directData.meta.serialize()

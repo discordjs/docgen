@@ -8,9 +8,12 @@ class DocumentedFunction extends DocumentedItem {
 		data.meta = new DocumentedItemMeta(this, data.meta);
 		if(data.returns) {
 			let returnDescription;
+			let returnNullable;
 			if(data.returns[0].description) returnDescription = data.returns[0].description;
+			if(data.returns[0].nullable) returnNullable = true;
 			data.returns = new DocumentedVarType(this, data.returns[0].type);
 			data.returns.directData.description = returnDescription;
+			data.returns.directData.nullable = returnNullable;
 		}
 		if(data.params) {
 			if(data.params.length > 0) {

@@ -13,7 +13,7 @@ class ClassyClass extends EventEmitter {
 
 		/**
 		 * Just some thing
-		 * @type {number}
+		 * @type {?number}
 		 */
 		this.thing = 42;
 	}
@@ -21,7 +21,7 @@ class ClassyClass extends EventEmitter {
 	/**
 	 * Does stuff.
 	 * @param {?string} stuff Stuff to do
-	 * @returns {number} A thing
+	 * @returns {?number} A thing
 	 */
 	doStuff(stuff) {
 		console.log(`Doing some pretty crazy stuff with ${stuff}`);
