@@ -25,6 +25,7 @@ class DocumentedTypeDef extends DocumentedItem {
 			description: this.directData.description,
 			see: this.directData.see,
 			access: this.directData.access,
+			deprecated: this.directData.deprecated,
 			type: this.directData.type.serialize(),
 			props: this.directData.properties ? this.directData.properties.map(p => p.serialize()) : undefined,
 			meta: this.directData.meta.serialize()

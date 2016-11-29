@@ -30,6 +30,7 @@ class ClassyClass extends EventEmitter {
 
 	/**
 	 * Who knows what this does.
+	 * @emits ClassyClass#thingDone
 	 */
 	hmm() {
 		console.log('Hmmmm..');
