@@ -13,87 +13,68 @@ const version = require('../package').version;
  */
 class Documentation {
 	constructor(items, custom) {
-		this.knownRootKinds = new Set(['class', 'interface', 'typedef', 'external']);
-		this.knownChildKinds = new Set(['constructor', 'member', 'function', 'event']);
+		this.rootTypes = {
+			class: [DocumentedClass, 'classes'],
+			interface: [DocumentedInterface, 'interfaces'],
+			typedef: [DocumentedTypeDef, 'typedefs'],
+			external: [DocumentedExternal, 'externals']
+		};
 
-		this.classes = new Map();
-		this.interfaces = new Map();
-		this.typedefs = new Map();
-		this.externals = new Map();
+		this.childTypes = {
+			'constructor': DocumentedConstructor, // eslint-disable-line quote-props
+			member: DocumentedMember,
+			function: DocumentedFunction,
+			event: DocumentedEvent
+		};
+
+		for(const type in this.rootTypes) this[this.rootTypes[type][1]] = new Map();
 		this.custom = custom;
 		this.parse(items);
 	}
 
-	registerRoots(data) {
-		for(const item of data) {
-			switch(item.kind) {
-				case 'class':
-					this.classes.set(item.name, new DocumentedClass(this, item));
-					break;
-				case 'interface':
-					this.interfaces.set(item.name, new DocumentedInterface(this, item));
-					break;
-				case 'typedef':
-					this.typedefs.set(item.name, new DocumentedTypeDef(this, item));
-					break;
-				case 'external':
-					this.externals.set(item.name, new DocumentedExternal(this, item));
-					break;
-				default:
-					break;
+	registerRoots(items) {
+		let i = 0;
+		while(i < items.length) {
+			const item = items[i];
+			if(this.rootTypes[item.kind] instanceof Array) {
+				const [Type, key] = this.rootTypes[item.kind];
+				this[key].set(item.name, new Type(this, item));
+				items.splice(i, 1);
+			} else {
+				++i;
 			}
 		}
 	}
 
 	findParent(item) {
-		if(this.knownChildKinds.has(item.kind)) {
-			let val = this.classes.get(item.memberof);
-			if(val) return val;
-			val = this.interfaces.get(item.memberof);
-			if(val) return val;
+		if(this.childTypes[item.kind]) {
+			for(const type in this.rootTypes) {
+				const parent = this[this.rootTypes[type][1]].get(item.memberof);
+				if(parent) return parent;
+			}
 		}
+
 		return null;
 	}
 
 	parse(items) {
-		this.registerRoots(items.filter(item => this.knownRootKinds.has(item.kind)));
-		const members = items.filter(item => !this.knownRootKinds.has(item.kind));
-		const unknowns = new Map();
+		this.registerRoots(items);
 
-		for(const member of members) {
+		for(const member of items) {
 			let item;
-			switch(member.kind) {
-				case 'constructor':
-					item = new DocumentedConstructor(this, member);
-					break;
-				case 'member':
-					item = new DocumentedMember(this, member);
-					break;
-				case 'function':
-					item = new DocumentedFunction(this, member);
-					break;
-				case 'event':
-					item = new DocumentedEvent(this, member);
-					break;
-				case 'external':
-					item = new DocumentedExternal(this, member);
-					break;
-				default:
-					unknowns.set(member.kind, member);
-					continue;
-			}
+			if(this.childTypes[member.kind]) item = new this.childTypes[member.kind](this, member);
+			else console.warn(`- Unknown documentation kind "${item.kind}" - \n${JSON.stringify(item)}\n`);
 
 			const parent = this.findParent(member);
-			if(!parent) {
-				let memberof = member.memberof || member.directData.memberof;
-				if(memberof) memberof = ` (member of "${memberof}")`;
-				console.warn(`- "${member.name || member.directData.name}"${memberof} has no accessible parent.`);
+			if(parent) {
+				parent.add(item);
 				continue;
 			}
-			parent.add(item);
-		}
-		for(const [key, val] of unknowns) {
-			console.warn(`- Unknown documentation kind "${key}" - \n${JSON.stringify(val)}\n`);
+
+			let memberof = member.memberof || member.directData.memberof;
+			if(memberof) memberof = ` (member of "${memberof}")`;
+			else memberof = '';
+			console.warn(`- "${member.name || member.directData.name}"${memberof} has no accessible parent.`);
 		}
 	}
 
@@ -106,12 +87,13 @@ class Documentation {
 
 		const serialized = {
 			meta,
-			classes: Array.from(this.classes.values()).map(c => c.serialize()),
-			interfaces: Array.from(this.interfaces.values()).map(i => i.serialize()),
-			typedefs: Array.from(this.typedefs.values()).map(t => t.serialize()),
-			externals: Array.from(this.externals.values()).map(e => e.serialize()),
 			custom: this.custom
 		};
+
+		for(const type in this.rootTypes) {
+			const key = this.rootTypes[type][1];
+			serialized[key] = Array.from(this[key].values()).map(i => i.serialize());
+		}
 
 		return serialized;
 	}
