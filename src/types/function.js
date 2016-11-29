@@ -36,7 +36,7 @@ class DocumentedFunction extends DocumentedItem {
 			inherited: this.directData.inherited,
 			implements: this.directData.implements,
 			examples: this.directData.examples,
-			abstract: this.directData.abstract,
+			abstract: this.directData.virtual,
 			deprecated: this.directData.deprecated,
 			emits: this.directData.fires,
 			throws: this.directData.throws,

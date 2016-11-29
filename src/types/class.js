@@ -51,7 +51,7 @@ class DocumentedClass extends DocumentedItem {
 			extends: this.directData.augments,
 			implements: this.directData.implements,
 			access: this.directData.access,
-			abstract: this.directData.abstract,
+			abstract: this.directData.virtual,
 			deprecated: this.directData.deprecated,
 			construct: this.construct ? this.construct.serialize() : undefined,
 			props: this.props.size > 0 ? Array.from(this.props.values()).map(p => p.serialize()) : undefined,
