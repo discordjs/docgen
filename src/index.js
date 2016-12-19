@@ -38,20 +38,22 @@ if(config.custom) {
 		const custom = {};
 		const filePromises = [];
 
-		for(const category of definitions) {
+		for(const cat of definitions) {
 			// Add the category to the custom docs
-			const catID = category.catID || category.path || category.name.toLowerCase();
-			const dir = path.join(customDir, category.path || catID);
-			custom[catID] = new Array(category.files.length);
+			const catID = cat.id || cat.name.toLowerCase();
+			const dir = path.join(customDir, cat.path || catID);
+			const category = {
+				name: cat.name || cat.id,
+				files: {}
+			};
+			custom[catID] = category;
 
 			// Add every file in the category
-			for(let f = 0; f < category.files.length; f++) {
-				const file = category.files[f];
+			for(const file of cat.files) {
 				filePromises.push(fs.readFile(path.join(dir, file.path), 'utf-8').then(content => {
 					const extension = path.extname(file.path);
 					const fileID = file.id || path.basename(file.path, extension);
-					custom[catID][f] = {
-						id: fileID,
+					category.files[fileID] = {
 						name: file.name,
 						type: extension.toLowerCase().replace(/^\./, ''),
 						content
