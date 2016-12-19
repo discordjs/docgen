@@ -50,13 +50,15 @@ if(config.custom) {
 
 			// Add every file in the category
 			for(const file of cat.files) {
-				filePromises.push(fs.readFile(path.join(dir, file.path), 'utf-8').then(content => {
+				const fileRootPath = path.join(dir, file.path);
+				filePromises.push(fs.readFile(fileRootPath, 'utf-8').then(content => {
 					const extension = path.extname(file.path);
 					const fileID = file.id || path.basename(file.path, extension);
 					category.files[fileID] = {
 						name: file.name,
 						type: extension.toLowerCase().replace(/^\./, ''),
-						content
+						content,
+						path: path.relative(config.root, fileRootPath).replace(/\\/g, '/')
 					};
 					if(config.verbose) console.log(`Loaded custom docs file ${catID}/${fileID}`);
 				}));
