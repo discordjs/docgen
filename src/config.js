@@ -26,7 +26,7 @@ module.exports = yargs
 		alias: 'r',
 		describe: 'Root directory of the project',
 		normalize: true,
-		default: process.cwd()
+		default: '.'
 	})
 	.option('output', {
 		type: 'string',
