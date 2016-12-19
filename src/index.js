@@ -66,7 +66,7 @@ if(config.custom) {
 		}
 
 		return Promise.all(filePromises).then(() => {
-			const fileCount = Object.keys(custom).map(k => custom[k]).reduce((prev, c) => prev + c.length, 0);
+			const fileCount = Object.keys(custom).map(k => Object.keys(custom[k])).reduce((prev, c) => prev + c.length, 0);
 			const categoryCount = Object.keys(custom).length;
 			console.log(
 				`${fileCount} custom docs file${fileCount !== 1 ? 's' : ''} in ` +
