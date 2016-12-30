@@ -7,8 +7,8 @@ class DocumentedInterface extends DocumentedClass {
     // this.directData.meta = new DocumentedItemMeta(this, data.meta);
 	}
 
-	serialize() {
-		const serialized = super.serialize();
+	serializer() {
+		const serialized = super.serializer();
 		serialized.description = this.directData.classdesc;
 		return serialized;
 	}

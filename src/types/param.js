@@ -7,7 +7,7 @@ class DocumentedParam extends DocumentedItem {
 		this.directData = data;
 	}
 
-	serialize() {
+	serializer() {
 		return {
 			name: this.directData.name,
 			description: this.directData.description,

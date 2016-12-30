@@ -41,7 +41,7 @@ class DocumentedClass extends DocumentedItem {
 		this.directData.meta = new DocumentedItemMeta(this, data.meta);
 	}
 
-	serialize() {
+	serializer() {
 		return {
 			name: this.directData.name,
 			description: this.directData.description,

@@ -11,7 +11,7 @@ class DocumentedItemMeta extends DocumentedItem {
 		};
 	}
 
-	serialize() {
+	serializer() {
 		return {
 			line: this.directData.line,
 			file: this.directData.file,

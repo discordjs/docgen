@@ -13,13 +13,21 @@ class DocumentedItem {
 		}
 	}
 
-	registerMetaInfo() {
-		return;
+	serialize() {
+		try {
+			return this.serializer();
+		} catch(err) {
+			err.message = `Error while serializing ${
+				this.directData && this.directData.id ?
+				`${this.directData.id} (${this.constructor.name})` :
+				this.constructor.name
+			}: ${err.message}`;
+			throw err;
+		}
 	}
 
-	serialize() {
-		return;
-	}
+	registerMetaInfo() { return; }
+	serializer() { return; }
 }
 
 module.exports = DocumentedItem;
