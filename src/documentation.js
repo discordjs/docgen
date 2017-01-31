@@ -71,10 +71,12 @@ class Documentation {
 				continue;
 			}
 
-			let memberof = member.memberof || member.directData.memberof;
+			let memberof = member.memberof || (member.directData ? member.directData.memberof : null);
 			if(memberof) memberof = ` (member of "${memberof}")`;
 			else memberof = '';
-			console.warn(`- "${member.name || member.directData.name}"${memberof} has no accessible parent.`);
+			const name = member.name || (member.directData ? member.directData.name : 'UNKNOWN');
+			console.warn(`- "${name}"${memberof} has no accessible parent.`);
+			if(!name && !memberof) console.warn('Raw object:', member);
 		}
 	}
 
