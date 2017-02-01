@@ -75,21 +75,19 @@ class Documentation {
 			const name = member.name || (member.directData ? member.directData.name : 'UNKNOWN');
 			let info = [];
 
-			let memberof = member.memberof || (member.directData ? member.directData.memberof : null);
-			memberof = memberof ? `member of "${memberof}"` : '';
-			info.push(memberof);
+			const memberof = member.memberof || (member.directData ? member.directData.memberof : null);
+			if(memberof) info.push(`member of "${memberof}"`);
 
 			const meta = member.meta ? member.meta.directData : member.directData && member.directData.meta ? {
 				path: member.directData.meta.path,
 				file: member.directData.meta.file || member.directData.meta.filename,
 				line: member.directData.meta.line || member.directData.meta.lineno
 			} : null;
-			const file = meta ? `${path.join(meta.path, meta.file)}:${meta.line}` : '';
-			info.push(file);
+			if(meta) info.push(`${path.join(meta.path, meta.file)}${meta.line ? `:${meta.line}` : ''}`);
 
 			info = info.length > 0 ? ` (${info.join(', ')})` : '';
 			console.warn(`- "${name}"${info} has no accessible parent.`);
-			if(!name && !memberof && !file) console.warn('Raw object:', member);
+			if(!name && info.length === 0) console.warn('Raw object:', member);
 		}
 	}
 
