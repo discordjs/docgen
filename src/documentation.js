@@ -1,3 +1,4 @@
+const path = require('path');
 const DocumentedClass = require('./types/class');
 const DocumentedInterface = require('./types/interface');
 const DocumentedTypeDef = require('./types/typedef');
@@ -71,12 +72,24 @@ class Documentation {
 				continue;
 			}
 
-			let memberof = member.memberof || (member.directData ? member.directData.memberof : null);
-			if(memberof) memberof = ` (member of "${memberof}")`;
-			else memberof = '';
 			const name = member.name || (member.directData ? member.directData.name : 'UNKNOWN');
-			console.warn(`- "${name}"${memberof} has no accessible parent.`);
-			if(!name && !memberof) console.warn('Raw object:', member);
+			let info = [];
+
+			let memberof = member.memberof || (member.directData ? member.directData.memberof : null);
+			memberof = memberof ? `member of "${memberof}"` : '';
+			info.push(memberof);
+
+			const meta = member.meta ? member.meta.directData : member.directData && member.directData.meta ? {
+				path: member.directData.meta.path,
+				file: member.directData.meta.file || member.directData.meta.filename,
+				line: member.directData.meta.line || member.directData.meta.lineno
+			} : null;
+			const file = meta ? `${path.join(meta.path, meta.file)}:${meta.line}` : '';
+			info.push(file);
+
+			info = info.length > 0 ? ` (${info.join(', ')})` : '';
+			console.warn(`- "${name}"${info} has no accessible parent.`);
+			if(!name && !memberof && !file) console.warn('Raw object:', member);
 		}
 	}
 
