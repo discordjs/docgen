@@ -4,6 +4,7 @@ class DocumentedInterface extends DocumentedClass {
 	registerMetaInfo(data) {
 		super.registerMetaInfo(data);
 		this.directData = data;
+		// Old code?
     // this.directData.meta = new DocumentedItemMeta(this, data.meta);
 	}
 

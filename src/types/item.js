@@ -20,8 +20,10 @@ class DocumentedItem {
 		}
 	}
 
-	registerMetaInfo() { return; }
-	serializer() { return; }
+	/* eslint-disable no-empty-function */
+	registerMetaInfo() {}
+	serializer() {}
+	/* eslint-enable no-empty-function */
 
 	detailedName(data) {
 		if(!data) return this.constructor.name;

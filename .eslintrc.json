@@ -8,9 +8,13 @@
 		"ecmaVersion": 2017
 	},
 	"rules": {
+		"no-await-in-loop": "warn",
+		"no-compare-neg-zero": "error",
 		"no-extra-parens": ["warn", "all", {
 			"nestedBinaryExpressions": false
 		}],
+		"no-template-curly-in-string": "error",
+		"no-unsafe-negation": "error",
 		"valid-jsdoc": ["warn", {
 			"requireReturn": false,
 			"requireReturnDescription": false,
@@ -18,7 +22,8 @@
 				"String": "string",
 				"Number": "number",
 				"Boolean": "boolean",
-				"Function": "function",
+				"Symbol": "symbol",
+				"function": "Function",
 				"object": "Object",
 				"date": "Date",
 				"error": "Error"
@@ -44,6 +49,7 @@
 		"no-new": "error",
 		"no-octal-escape": "error",
 		"no-return-assign": "error",
+		"no-return-await": "error",
 		"no-self-compare": "error",
 		"no-sequences": "error",
 		"no-throw-literal": "error",
@@ -52,8 +58,11 @@
 		"no-useless-call": "error",
 		"no-useless-concat": "error",
 		"no-useless-escape": "error",
+		"no-useless-return": "error",
 		"no-void": "error",
 		"no-warning-comments": "warn",
+		"prefer-promise-reject-errors": "error",
+		"require-await": "warn",
 		"wrap-iife": "error",
 		"yoda": "error",
 
@@ -72,6 +81,7 @@
 		"block-spacing": "error",
 		"brace-style": ["error", "1tbs", { "allowSingleLine": true }],
 		"camelcase": "error",
+		"capitalized-comments": ["error", "always", { "ignoreConsecutiveComments": true }],
 		"comma-dangle": "error",
 		"comma-spacing": "error",
 		"comma-style": "error",
@@ -109,6 +119,7 @@
 		"no-trailing-spaces": "error",
 		"no-unneeded-ternary": "error",
 		"no-whitespace-before-property": "error",
+		"nonblock-statement-body-position": "error",
 		"object-curly-newline": "error",
 		"object-curly-spacing": ["error", "always"],
 		"operator-assignment": "error",
@@ -124,9 +135,11 @@
 		"space-infix-ops": "error",
 		"space-unary-ops": "error",
 		"spaced-comment": "error",
+		"template-tag-spacing": "error",
 		"unicode-bom": "error",
 
 		"arrow-body-style": "error",
+		"arrow-parens": ["error", "as-needed"],
 		"arrow-spacing": "error",
 		"no-duplicate-imports": "error",
 		"no-useless-computed-key": "error",
