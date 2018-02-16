@@ -1,5 +1,7 @@
 #!/usr/bin/env node
-const fs = require('fs-promise');
+const { promisify } = require('util');
+const fs = require('fs');
+const readFile = promisify(fs.readFile);
 const path = require('path');
 const jsdoc2md = require('jsdoc-to-markdown');
 const Documentation = require('./documentation');
@@ -29,7 +31,7 @@ if(config.custom) {
 	else if(defExtension === '.yml' || defExtension === '.yaml') type = 'yaml';
 	else throw new TypeError('Unknown custom docs definition file type.');
 
-	mainPromises[1] = fs.readFile(config.custom, 'utf-8').then(defContent => {
+	mainPromises[1] = readFile(config.custom, 'utf-8').then(defContent => {
 		// Parse the definition file
 		let definitions;
 		if(type === 'json') definitions = JSON.parse(defContent);
@@ -55,7 +57,7 @@ if(config.custom) {
 				const fileID = file.id || path.basename(file.path, extension);
 				category.files[fileID] = null;
 
-				filePromises.push(fs.readFile(fileRootPath, 'utf-8').then(content => {
+				filePromises.push(readFile(fileRootPath, 'utf-8').then(content => {
 					category.files[fileID] = {
 						name: file.name,
 						type: extension.toLowerCase().replace(/^\./, ''),

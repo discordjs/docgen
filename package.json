@@ -36,11 +36,10 @@
 	},
 	"homepage": "https://github.com/hydrabolt/discord.js-docgen",
 	"dependencies": {
-		"eslint": "^3.17.0",
-		"fs-promise": "^1.0.0",
-		"js-yaml": "^3.6.0",
-		"jsdoc-to-markdown": "^2.0.0",
-		"yargs": "^6.4.0"
+		"eslint": "^4.17.0",
+		"js-yaml": "^3.10.0",
+		"jsdoc-to-markdown": "^4.0.1",
+		"yargs": "^11.0.0"
 	},
 	"engines": {
 		"node": ">=6.0.0"
