@@ -41,6 +41,8 @@ class DocumentedFunction extends DocumentedItem {
 			emits: this.directData.fires,
 			throws: this.directData.throws,
 			params: this.directData.params ? this.directData.params.map(p => p.serialize()) : undefined,
+			async: this.directData.async,
+			generator: this.directData.generator,
 			returns: this.directData.returns ? this.directData.returns.serialize() : undefined,
 			returnsDescription: this.directData.returnsDescription,
 			meta: this.directData.meta.serialize()
