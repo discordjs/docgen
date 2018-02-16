@@ -79,4 +79,4 @@ module.exports = yargs
 	.group('version', 'Special:')
 	.completion('completion')
 	.wrap(yargs.terminalWidth())
-.argv;
+	.argv;

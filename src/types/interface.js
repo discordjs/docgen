@@ -5,7 +5,7 @@ class DocumentedInterface extends DocumentedClass {
 		super.registerMetaInfo(data);
 		this.directData = data;
 		// Old code?
-    // this.directData.meta = new DocumentedItemMeta(this, data.meta);
+		// this.directData.meta = new DocumentedItemMeta(this, data.meta);
 	}
 
 	serializer() {
