@@ -39,6 +39,7 @@
 		"eslint": "^4.17.0",
 		"js-yaml": "^3.10.0",
 		"jsdoc-to-markdown": "^4.0.1",
+		"tsubaki": "^1.3.0",
 		"yargs": "^11.0.0"
 	},
 	"engines": {
