@@ -16,6 +16,13 @@ class DocumentedTypeDef extends DocumentedItem {
 				data.properties = undefined;
 			}
 		}
+		if(data.params) {
+			if(data.params.length > 0) {
+				for(let i = 0; i < data.params.length; i++) data.params[i] = new DocumentedParam(this, data.params[i]);
+			} else {
+				data.params = undefined;
+			}
+		}
 		this.directData = data;
 	}
 
@@ -28,6 +35,7 @@ class DocumentedTypeDef extends DocumentedItem {
 			deprecated: this.directData.deprecated,
 			type: this.directData.type.serialize(),
 			props: this.directData.properties ? this.directData.properties.map(p => p.serialize()) : undefined,
+			params: this.directData.params ? this.directData.params.map(p => p.serialize()) : undefined,
 			meta: this.directData.meta.serialize()
 		};
 	}

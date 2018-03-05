@@ -21,10 +21,12 @@ class ClassyClass extends EventEmitter {
 	/**
 	 * Does stuff.
 	 * @param {?string} stuff Stuff to do
+	 * @param {StuffDoer} doer Callback to do the stuff
 	 * @returns {?number} A thing
 	 */
-	doStuff(stuff) {
+	doStuff(stuff, doer) {
 		console.log(`Doing some pretty crazy stuff with ${stuff}`);
+		doer(stuff);
 		return this.thing;
 	}
 
@@ -50,10 +52,16 @@ class ClassyClass extends EventEmitter {
  * @property {number} someNumber A really cool number
  */
 
- /**
-  * @external ClientOptions
-  * @see {@link http://hydrabolt.github.io/discord.js/#!/docs/tag/master/typedef/ClientOptions}
-  */
+/**
+ * Does some stuff with some other stuff.
+ * @callback StuffDoer
+ * @param {?string} stuff Stuff to use to do stuff
+ */
+
+/**
+ * @external ClientOptions
+ * @see {@link http://hydrabolt.github.io/discord.js/#!/docs/tag/master/typedef/ClientOptions}
+ */
 
 /**
  * Oh boy, an export!
