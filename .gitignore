@@ -1,4 +1,4 @@
-node_modules/
-*.log
+/node_modules/
 /docs/
+*.log
 docs.json

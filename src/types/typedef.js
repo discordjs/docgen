@@ -23,6 +23,15 @@ class DocumentedTypeDef extends DocumentedItem {
 				data.params = undefined;
 			}
 		}
+		if(data.returns) {
+			let returnDescription;
+			let returnNullable;
+			if(data.returns[0].description) returnDescription = data.returns[0].description;
+			if(data.returns[0].nullable) returnNullable = true;
+			data.returns = new DocumentedVarType(this, data.returns[0].type);
+			data.returns.directData.description = returnDescription;
+			data.returns.directData.nullable = returnNullable;
+		}
 		this.directData = data;
 	}
 
@@ -36,6 +45,8 @@ class DocumentedTypeDef extends DocumentedItem {
 			type: this.directData.type.serialize(),
 			props: this.directData.properties ? this.directData.properties.map(p => p.serialize()) : undefined,
 			params: this.directData.params ? this.directData.params.map(p => p.serialize()) : undefined,
+			returns: this.directData.returns ? this.directData.returns.serialize() : undefined,
+			returnsDescription: this.directData.returnsDescription,
 			meta: this.directData.meta.serialize()
 		};
 	}
