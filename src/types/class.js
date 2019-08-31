@@ -4,6 +4,7 @@ const DocumentedConstructor = require('./constructor');
 const DocumentedFunction = require('./function');
 const DocumentedMember = require('./member');
 const DocumentedEvent = require('./event');
+const DocumentedVarType = require('./var-type');
 
 class DocumentedClass extends DocumentedItem {
 	constructor(docParent, data) {
@@ -11,6 +12,8 @@ class DocumentedClass extends DocumentedItem {
 		this.props = new Map();
 		this.methods = new Map();
 		this.events = new Map();
+		if(data.augments) this.extends = new DocumentedVarType(this, { names: data.augments });
+		if(data.implements) this.implements = new DocumentedVarType(this, { names: data.implements });
 	}
 
 	add(item) {
@@ -46,8 +49,8 @@ class DocumentedClass extends DocumentedItem {
 			name: this.directData.name,
 			description: this.directData.description,
 			see: this.directData.see,
-			extends: this.directData.augments,
-			implements: this.directData.implements,
+			extends: this.extends ? this.extends.serialize() : undefined,
+			implements: this.implements ? this.implements.serialize() : undefined,
 			access: this.directData.access,
 			abstract: this.directData.virtual,
 			deprecated: this.directData.deprecated,
