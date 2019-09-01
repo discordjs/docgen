@@ -1,0 +1,43 @@
+name: Test
+on: [push, pull_request]
+jobs:
+  eslint:
+    name: eslint
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v1
+
+    - name: Install Node v12
+      uses: actions/setup-node@v1
+      with:
+        node-version: 12
+
+    - name: Install dependencies
+      uses: Borales/actions-yarn@v1
+      args: install
+
+    - name: Run ESLint
+      uses: discordjs/action-eslint@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        job-name: eslint
+
+  test-docs:
+    name: Test documentation
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v1
+
+    - name: Install Node v12
+      uses: actions/setup-node@v1
+      with:
+        node-version: 12
+
+    - name: Install dependencies
+      uses: Borales/actions-yarn@v1
+      args: install
+  
+    - name: Test documentation
+      uses: Borales/actions-yarn@v1
+      args: test:docs
