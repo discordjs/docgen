@@ -2,7 +2,7 @@ name: Test
 on: [push, pull_request]
 jobs:
   eslint:
-    name: eslint
+    name: ESLint
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v1
@@ -22,7 +22,7 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        job-name: eslint
+        job-name: ESLint
 
   test-docs:
     name: Test documentation
