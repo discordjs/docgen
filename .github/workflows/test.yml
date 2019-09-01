@@ -14,7 +14,8 @@ jobs:
 
     - name: Install dependencies
       uses: Borales/actions-yarn@v1
-      args: install
+      with:
+        args: install
 
     - name: Run ESLint
       uses: discordjs/action-eslint@v1
@@ -36,8 +37,10 @@ jobs:
 
     - name: Install dependencies
       uses: Borales/actions-yarn@v1
-      args: install
+      with:
+        args: install
   
     - name: Test documentation
       uses: Borales/actions-yarn@v1
-      args: test:docs
+      with:
+        args: test:docs
