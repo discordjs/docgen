@@ -7,8 +7,8 @@
 		"docgen": "src/index.js"
 	},
 	"scripts": {
-		"test": "eslint src && node src --source test/src --custom test/docs/index.yml --output test/docs/docs.json --spaces 2",
-		"test:docs": "node src --source test/src --custom test/docs/index.yml --output test/docs/docs.json --spaces 2",
+		"test": "eslint src && node src --source test/src/*.js test/src/**/*-js --custom test/docs/index.yml --output test/docs/docs.json --spaces 2",
+		"test:docs": "node src --source test/src/*.js test/src/**/*.js --custom test/docs/index.yml --output test/docs/docs.json --spaces 2",
 		"lint": "eslint src",
 		"lint:fix": "eslint --fix src"
 	},
