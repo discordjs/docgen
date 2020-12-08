@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-const { promisify } = require('tsubaki');
+const { promisify } = require('util');
 const fs = require('fs');
 const readFile = promisify(fs.readFile);
 const path = require('path');
