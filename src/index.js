@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 const fs = require('fs');
-const readFile = require('util').promisify(fs.readFileSync);
+const readFile = require('util').promisify(fs.readFile);
 const path = require('path');
 const jsdoc2md = require('jsdoc-to-markdown');
 const Documentation = require('./documentation');
